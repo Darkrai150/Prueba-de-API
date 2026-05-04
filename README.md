@@ -1,4 +1,4 @@
-# Santuario de Michis 🐾
+# Prueba 🐾
 Proyecto desarrollado para mi servicio social usando **SvelteKit** y **Tailwind v4**.
 
 ### Características:
