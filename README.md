@@ -1,5 +1,5 @@
 # Santuario de Michis 🐾
-Proyecto desarrollado para la DGTIC usando **SvelteKit** y **Tailwind v4**.
+Proyecto desarrollado para mi servicio social usando **SvelteKit** y **Tailwind v4**.
 
 ### Características:
 - Consumo de The Cat API.
