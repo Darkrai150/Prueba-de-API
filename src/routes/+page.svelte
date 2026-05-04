@@ -1,55 +1,79 @@
 <script>
+    import { onMount } from 'svelte';
+
+    // Estados reactivos con Runes de Svelte 5
     let michiUrl = $state("https://placecats.com/millie/300/150");
     let cargando = $state(false);
 
+    // Persistencia de datos 
+    onMount(() => {
+        const guardado = localStorage.getItem("ultimoMichi");
+        if (guardado) {
+            michiUrl = guardado;
+        }
+    });
+
     async function obtenerNuevoMichi() {
         cargando = true;
-
-        // Llamamos a la variable de entorno definida en .env
-        const apiKey = import.meta.env.VITE_CAT_API_KEY;
+        const apiKey = import.meta.env.VITE_CAT_API_KEY; // Seguridad vía .env
 
         try {
-            const respuesta = await fetch(
-                "https://api.thecatapi.com/v1/images/search",
-                {
-                    // Aquí es donde la llave hace su trabajo
-                    headers: {
-                        "x-api-key": apiKey,
-                    },
-                },
-            );
+            const respuesta = await fetch("https://api.thecatapi.com/v1/images/search", {
+                headers: { 'x-api-key': apiKey }
+            });
             const datos = await respuesta.json();
             michiUrl = datos[0].url;
+            
+            // Guardamos la selección actual en el navegador
+            localStorage.setItem("ultimoMichi", michiUrl);
         } catch (error) {
-            console.error("Error al obtener un nuevo michi:", error);
+            console.error("Error al invocar la API:", error);
         } finally {
             cargando = false;
         }
     }
 </script>
 
-<main>
-    <div class="glass-card">
-        <h1>Prueba de API</h1>
+<main class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- Tarjeta con efecto Glassmorphism usando tus variables -->
+    <div 
+        class="max-w-md w-full p-8 rounded-3xl border shadow-2xl backdrop-blur-md"
+        style="background: rgba(255, 255, 255, 0.03); border-color: var(--st-glass-border);"
+    >
+        <h1 class="text-3xl font-bold mb-6 text-center tracking-wider" 
+            style="color: var(--st-accent-cyber);">
+            Prueba de API
+        </h1>
 
-        <div class="contenedor-imagen">
+        <!-- Contenedor de imagen con resplandor[cite: 1] -->
+        <div class="relative group overflow-hidden rounded-2xl mb-8 border" 
+             style="border-color: var(--st-glass-border);">
             {#if cargando}
-                <p>Buscando un gatito para ti...</p>
-            {:else}
-                <img src={michiUrl} alt="Un gato del santuario" />
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-10">
+                    <span class="animate-pulse font-mono" style="color: var(--st-accent-cyber);">CARGANDO...</span>
+                </div>
             {/if}
+            <img 
+                src={michiUrl} 
+                alt="Michi del Santuario" 
+                class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+            />
         </div>
 
-        {#if cargando}
-            Cargando...
-        {:else}
-            Si no te gusto da click aqui! ->
-        {/if}
-
-        <button onclick={obtenerNuevoMichi} disabled={cargando}>
-            {cargando ? "Cargando..." : "Quiero otro gato"}
+        <!-- Botón interactivo con estética Cyberpunk[cite: 1] -->
+        <button 
+            onclick={obtenerNuevoMichi}
+            disabled={cargando}
+            class="w-full py-4 rounded-xl font-bold uppercase tracking-widest transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95"
+            style="background: transparent; border: 2px solid var(--st-accent-cyber); color: var(--st-accent-cyber); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);"
+        >
+            {cargando ? 'Invocando...' : 'Obtener Michi'}
         </button>
     </div>
+
+    <footer class="mt-8 opacity-50 text-xs font-mono tracking-widest">
+        Fes Aragon - Servicio Social - Práctica 2
+    </footer>
 </main>
 
 <style>

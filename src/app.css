@@ -1,13 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+    --color-st-bg-dark: #051424;
+    --color-st-accent-cyber: #00f2ff;
+    --color-st-primary-glow: #ffb690;
+    --radius-st-xl: 24px;
+}
+
 :root {
-    --st-bg-dark: #051424;
-    --st-primary-glow: #ffb690;
+    
+    --st-bg-dark: #071b31; 
+    --st-glass-border: rgba(255, 255, 255, 0.1); 
     --st-text-main: #d4e4fa;
-    --st-glass-border: rgba(255, 255, 255, 0.1);
-
-    --st-radius-xl: 24px;
-    --st-radius-lg: 2rem;
-
-    --st-accent-cyber: #00f2ff;
 }
 
 body {
@@ -16,4 +20,5 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
