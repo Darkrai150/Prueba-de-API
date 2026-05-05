@@ -19,7 +19,7 @@
 
     async function obtenerNuevoMichi() {
         cargando = true;
-        // Asegúrate de tener esta variable en tu archivo .env
+        // Asegura tener esta variable en tu archivo .env
         const apiKey = import.meta.env.VITE_CAT_API_KEY;
 
         try {
