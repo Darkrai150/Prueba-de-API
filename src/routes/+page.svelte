@@ -1,8 +1,11 @@
 <script>
     import { onMount } from "svelte";
-
+    // La funcion state define variables reactivas que actualizan
+    // automaticamente la interfaz cuando cambian
     //  Inicializa la URL vacía para que el servidor no pinte nada por defecto
     let michiUrl = $state("");
+    // la variable cargando se encarga de controlar el flujo
+    // de la interfaz y mostrar feedback al usuario
     let cargando = $state(false);
     //  Nuevo estado para detectar cuando el cliente leyó el LocalStorage
     let montado = $state(false);
@@ -16,16 +19,22 @@
 
     async function obtenerNuevoMichi() {
         cargando = true;
-        const apiKey = import.meta.env.VITE_CAT_API_KEY; // Asegúrate de tener esta variable en tu .env.local
+        // Asegúrate de tener esta variable en tu archivo .env
+        const apiKey = import.meta.env.VITE_CAT_API_KEY;
 
         try {
+            //se realiza una peticion HTTP con fetch a la API de gatos
             const respuesta = await fetch(
                 "https://api.thecatapi.com/v1/images/search",
                 {
+                    // incluyendo la clave de API en los encabezados para autenticación
                     headers: { "x-api-key": apiKey },
                 },
             );
+            // await pausa la ejecucion hasta recibir la respuesta
+            // respuesta.json() convierte la respuesta en formato JSON a un objeto de JavaScript
             const datos = await respuesta.json();
+            // se asigna la url de la imagen a michiUrl
             michiUrl = datos[0].url;
             localStorage.setItem("ultimoMichi", michiUrl);
         } catch (error) {
@@ -66,7 +75,7 @@
                 </div>
             {/if}
 
-            <!-- Solo renderizamos la imagen si el cliente ya está listo -->
+            <!-- Solo se renderiza la imagen si el cliente ya está listo -->
             {#if montado && michiUrl}
                 <img
                     src={michiUrl}
@@ -93,6 +102,6 @@
     <footer
         class="mt-8 opacity-50 text-xs font-mono tracking-widest text-center"
     >
-        FES ARAGÓN - SERVICIO SOCIAL<br />
+        FES ARAGÓN<br />
     </footer>
 </main>

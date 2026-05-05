@@ -1,8 +1,6 @@
-# Prueba 🐾
-Proyecto desarrollado para mi servicio social usando **SvelteKit** y **Tailwind v4**.
+## Funcionalidades
 
-### Características:
-- Consumo de The Cat API.
-- Persistencia local con LocalStorage.
-- Diseño "Cyber-Glass".
-- Uso de tailwindcss
+- Consumo de API (TheCatAPI)
+- Persistencia con localStorage
+- Interfaz con Tailwind CSS
+- Manejo de estado (cargando / sincronización)
