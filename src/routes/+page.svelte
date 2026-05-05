@@ -1,30 +1,32 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount } from "svelte";
 
-    // Estados reactivos con Runes de Svelte 5
-    let michiUrl = $state("https://placecats.com/millie/300/150");
+    //  Inicializa la URL vacía para que el servidor no pinte nada por defecto
+    let michiUrl = $state("");
     let cargando = $state(false);
+    //  Nuevo estado para detectar cuando el cliente leyó el LocalStorage
+    let montado = $state(false);
 
-    // Persistencia de datos 
     onMount(() => {
         const guardado = localStorage.getItem("ultimoMichi");
-        if (guardado) {
-            michiUrl = guardado;
-        }
+        // Si hay algo guardado lo usamos; si no, ponemos el de respaldo
+        michiUrl = guardado || "https://placecats.com/millie/300/150";
+        montado = true; // Marcamos que el cliente ya está sincronizado
     });
 
     async function obtenerNuevoMichi() {
         cargando = true;
-        const apiKey = import.meta.env.VITE_CAT_API_KEY; // Seguridad vía .env
+        const apiKey = import.meta.env.VITE_CAT_API_KEY;  // Asegúrate de tener esta variable en tu .env.local
 
         try {
-            const respuesta = await fetch("https://api.thecatapi.com/v1/images/search", {
-                headers: { 'x-api-key': apiKey }
-            });
+            const respuesta = await fetch(
+                "https://api.thecatapi.com/v1/images/search",
+                {
+                    headers: { "x-api-key": apiKey },
+                },
+            );
             const datos = await respuesta.json();
             michiUrl = datos[0].url;
-            
-            // Guardamos la selección actual en el navegador
             localStorage.setItem("ultimoMichi", michiUrl);
         } catch (error) {
             console.error("Error al invocar la API:", error);
@@ -35,44 +37,63 @@
 </script>
 
 <main class="min-h-screen flex flex-col items-center justify-center p-4">
-    <!-- Tarjeta con efecto Glassmorphism usando tus variables -->
-    <div 
+    <div
         class="max-w-md w-full p-8 rounded-3xl border shadow-2xl backdrop-blur-md"
-        style="background: rgba(255, 255, 255, 0.03); border-color: var(--st-glass-border);"
+        style="background: rgba(255 255, 0.03); border-color: var(--st-glass-border);"
     >
-        <h1 class="text-3xl font-bold mb-6 text-center tracking-wider" 
-            style="color: var(--st-accent-cyber);">
-            Prueba de API
+        <h1
+            class="text-3xl font-bold mb-6 text-center tracking-wider"
+            style="color: var(--st-accent-cyber);"
+        >
+            Prueba API
         </h1>
 
-        <!-- Contenedor de imagen con resplandor[cite: 1] -->
-        <div class="relative group overflow-hidden rounded-2xl mb-8 border" 
-             style="border-color: var(--st-glass-border);">
-            {#if cargando}
-                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm z-10">
-                    <span class="animate-pulse font-mono" style="color: var(--st-accent-cyber);">CARGANDO...</span>
+        <div
+            class="relative group overflow-hidden rounded-2xl mb-8 border bg-slate-900/20 h-64"
+            style="border-color: var(--st-glass-border);"
+        >
+            <!--  Overlay de carga: Se muestra si está cargando O si aún no se monta el cliente -->
+            {#if !montado || cargando}
+                <div
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80 backdrop-blur-sm z-10"
+                >
+                    <span
+                        class="animate-pulse font-mono text-sm"
+                        style="color: var(--st-accent-cyber);"
+                    >
+                        {!montado ? "SINCRONIZANDO..." : "BUSCANDO MICHI..."}
+                    </span>
                 </div>
             {/if}
-            <img 
-                src={michiUrl} 
-                alt="Michi del Santuario" 
-                class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+
+            <!-- Solo renderizamos la imagen si el cliente ya está listo -->
+            {#if montado && michiUrl}
+                <img
+                    src={michiUrl}
+                    alt="Michi del Santuario"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+            {/if}
         </div>
 
-        <!-- Botón interactivo con estética Cyberpunk[cite: 1] -->
-        <button 
+        <button
             onclick={obtenerNuevoMichi}
-            disabled={cargando}
+            disabled={!montado || cargando}
             class="w-full py-4 rounded-xl font-bold uppercase tracking-widest transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95"
             style="background: transparent; border: 2px solid var(--st-accent-cyber); color: var(--st-accent-cyber); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);"
         >
-            {cargando ? 'Invocando...' : 'Obtener Michi'}
+            {!montado
+                ? "Iniciando..."
+                : cargando
+                  ? "Invocando..."
+                  : "Obtener Michi"}
         </button>
     </div>
 
-    <footer class="mt-8 opacity-50 text-xs font-mono tracking-widest">
-        Fes Aragon - Servicio Social - Práctica 2
+    <footer
+        class="mt-8 opacity-50 text-xs font-mono tracking-widest text-center"
+    >
+        FES ARAGÓN - SERVICIO SOCIAL<br />
     </footer>
 </main>
 
