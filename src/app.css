@@ -1,12 +1,10 @@
 @import "tailwindcss";
 
 :root {
-    --color-st-bg-dark: #051424;
-    --color-st-accent-cyber: #00f2ff;
-    --color-st-primary-glow: #ffb690;
-    --radius-st-xl: 24px;
-
-    --st-bg-dark: #071b31;
+    --st-bg-dark: #051424;
+    --st-accent-cyber: #00f2ff;
+    --st-primary-glow: #ffb690;
+    --st-radius-xl: 24px;
     --st-glass-border: rgba(255, 255, 255, 0.1);
     --st-text-main: #d4e4fa;
 }

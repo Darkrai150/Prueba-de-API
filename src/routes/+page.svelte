@@ -16,7 +16,7 @@
 
     async function obtenerNuevoMichi() {
         cargando = true;
-        const apiKey = import.meta.env.VITE_CAT_API_KEY;  // Asegúrate de tener esta variable en tu .env.local
+        const apiKey = import.meta.env.VITE_CAT_API_KEY; // Asegúrate de tener esta variable en tu .env.local
 
         try {
             const respuesta = await fetch(
@@ -39,7 +39,7 @@
 <main class="min-h-screen flex flex-col items-center justify-center p-4">
     <div
         class="max-w-md w-full p-8 rounded-3xl border shadow-2xl backdrop-blur-md"
-        style="background: rgba(255 255, 0.03); border-color: var(--st-glass-border);"
+        style="background: rgba(255, 255, 255, 0.11); border-color: var(--st-glass-border);"
     >
         <h1
             class="text-3xl font-bold mb-6 text-center tracking-wider"
@@ -96,55 +96,3 @@
         FES ARAGÓN - SERVICIO SOCIAL<br />
     </footer>
 </main>
-
-<style>
-    .glass-card {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--st-glass-border);
-        border-radius: var(--st-border-radius-xl);
-        padding: var(--st-spacing-lg);
-        max-width: 500px;
-        margin: 50px auto;
-        text-align: center;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-
-    img {
-        width: 100%;
-        border-radius: var(--st-border-radius-xl);
-        margin: 20px 0;
-        border: 1px solid var(--st-glass-border);
-        display: block;
-    }
-
-    .contenedor-imagen {
-        min-height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    button {
-        background-color: var(--st-primary);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: var(--st-border-radius-md);
-        font-weight: bold;
-        cursor: pointer;
-        transition:
-            transform 0.2s ease,
-            background-color 0.2s;
-    }
-
-    button:hover {
-        transform: scale(1.05);
-        filter: brightness(1.1);
-    }
-
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-</style>
