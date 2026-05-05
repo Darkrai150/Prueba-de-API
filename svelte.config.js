@@ -6,7 +6,7 @@ export default {
             fallback: '404.html'
         }),
         paths: {
-            base: '/Prueba-de-API'  // ← el nombre exacto de tu repo en GitHub
+            base: '/Prueba-de-API'  
         }
     }
 };
