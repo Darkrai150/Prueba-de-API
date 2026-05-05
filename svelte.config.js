@@ -1,17 +1,12 @@
 import adapter from '@sveltejs/adapter-static';
 
 export default {
-	kit: {
-		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: 'index.html'
-		}),
-
-		paths: {
-			base: process.env.NODE_ENV === 'production'
-				? '/Prueba-de-API'
-				: ''
-		}
-	}
+    kit: {
+        adapter: adapter({
+            fallback: '404.html'
+        }),
+        paths: {
+            base: '/Prueba-de-API'  // ← el nombre exacto de tu repo en GitHub
+        }
+    }
 };
